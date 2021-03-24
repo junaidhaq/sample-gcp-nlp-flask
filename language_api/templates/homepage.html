@@ -15,5 +15,10 @@
       <p>Uploaded: {{text_entity['timestamp']}}</p>
       <p>Overall Sentiment: {{text_entity['sentiment']}}</p>
     {% endfor %}
+
+    <form action="analyze-file" method="POST" enctype="multipart/form-data">
+      Filename to analyze: <input type="text" name="text"><br>
+      <input type="submit" name="submit" value="Submit">
+    </form>
   </body>
 </html> 
