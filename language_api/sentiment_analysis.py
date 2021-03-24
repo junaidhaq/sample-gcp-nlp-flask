@@ -96,8 +96,6 @@ def analyze(filename):
     sentence_scores.plot(kind='line', y='SentenceSentiment', x='SentenceIndex')
     plt.show()
 
-    print('HELLO WORLD')
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
