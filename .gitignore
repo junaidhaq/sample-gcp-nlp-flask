@@ -1,0 +1,9 @@
+# Ignore Mac .DS_Store files
+.DS_Store
+
+# idea project files
+.idea
+*.iml
+
+#Other stuff
+__pycache__
