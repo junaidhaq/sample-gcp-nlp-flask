@@ -34,12 +34,14 @@ def homepage():
     text_entities = list(query.fetch())
 
     # # Return a Jinja2 HTML template and pass in text_entities as a parameter.
-    return render_template("db.homepage.html", text_entities=text_entities)
+    return render_template("db_homepage.html", text_entities=text_entities)
 
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload_text():
     text = request.form["text"]
+
+    request.files["file"]
 
     # Analyse sentiment using Sentiment API call
     sentiment = analyze_text_sentiment(text)[0].get('sentiment score')
