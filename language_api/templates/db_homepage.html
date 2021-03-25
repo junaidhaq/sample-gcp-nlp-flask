@@ -11,10 +11,14 @@
 	<h1>Sentence Sentiment</h1>
 	<p>Input some text inside the box below, and the sentiment will be returned</p>
 	    <form action="upload" method="POST" enctype="multipart/form-data">
-		    <label for="text">Insert Text:</label> <input type="text" name="text" id="text"><br>
+		    <label for="text">Insert Text:</label> <input type="text" name="text" id="text_sentence"><br>
 	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Sentence')">
 	    </form>
-    {% for text_entity in text_entities %}
+	</div>
+	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
+	<h1>Stored So Far</h1>
+    {% for text_entity in text_entities|sort(attribute='timestamp') %}
+      <hr/>
       <p>Text: {{text_entity['text']}}</p>
       <p>Uploaded: {{text_entity['timestamp']}}</p>
       <p>Overall Sentiment: {{text_entity['sentiment']}}</p>
@@ -26,8 +30,8 @@
 	<p>Insert an Article, and the data content will return a sentiment</p>
 	    <form action="upload" method="POST" enctype="multipart/form-data">
 		    <label for="text">Upload Article:</label>
-		    <textarea id="text" name="text" rows="4" cols="50"></textarea>
-	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
+		    <textarea id="text_article" name="text" rows="4" cols="50"></textarea>
+	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Article')">
 	    </form>
 	</div>
 	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
@@ -42,17 +46,33 @@
 	<h1>File Sentiment</h1>
 	<p>Upload a file, and the data content will return a sentiment</p>
 	    <form action="analyze-file" method="POST" enctype="multipart/form-data">
-		    <label for="text_file">Upload File:</label><input type="file" name="text" id="text"><br>
-	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
+		    <label for="text_file">Upload File:</label><input type="file" name="text" id="text_file"><br>
+	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('File')">
 	    </form>
 	</div>
 	-->
 	  </div>
 	<script type="text/javascript">
-		function submitRequest(request_type)
+	function submitRequest(request_type)
+	{
+		var response = true;
+		var text_input = '';
+		if ( request_type == 'Sentence')
 		{
-			return true;
+			text_input = $('#text_sentence').val().trim();
 		}
+		// Check whether a value has been provided
+		if ( ! text_input || text_input == '' )
+		{
+			alert("No text");
+			response = false;
+		}
+		return response;
+	}
+	// When the document is ready
+	$( document ).ready(function() {
+		// Placholder
+	});
 	</script>
   </body>
 </html> 

@@ -27,7 +27,6 @@ def homepage():
     # # Return a Jinja2 HTML template and pass in text_entities as a parameter.
     return render_template("db_homepage.html", text_entities=text_entities)
 
-
 @app.route("/upload", methods=["GET", "POST"])
 def upload_text():
     text = request.form["text"]
@@ -54,7 +53,8 @@ def upload_text():
     kind = "Sentences"
 
     # Create the Cloud Datastore key for the new entity.
-    key = datastore_client.key(kind, 'sample_task')
+    # key = datastore_client.key(kind, 'sample_task')
+    key = datastore_client.key(kind, text)
 
     # Alternative to above, the following would store a history of all previous requests as no key
     # identifier is specified, only a 'kind'. Datastore automatically provisions numeric ids.
