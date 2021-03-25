@@ -1,0 +1,43 @@
+<html>
+  <head>
+	  <title>GEE Module - NLP Learning</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+	<h1>Sentence Sentiment</h1>
+	<p>Input some text inside the box below, and the sentiment will be returned</p>
+	    <form action="upload" method="POST" enctype="multipart/form-data">
+	      Upload Text: <input type="text" name="text" id="text"><br>
+	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Sentence')">
+	    </form>
+	    <!--
+    {% for text_entity in text_entities %}
+      <p>Text: {{text_entity['text']}}</p>
+      <p>Uploaded: {{text_entity['timestamp']}}</p>
+      <p>Overall Sentiment: {{text_entity['sentiment']}}</p>
+    {% endfor %}
+	    -->
+    <hr/>
+	<h1>URL Sentiment</h1>
+	<p>Enter a URL that will have its text scraped, and the sentiment returned</p>
+	    <form action="upload" method="POST" enctype="multipart/form-data">
+	      Upload Text: <input type="text_url" name="text_url" id="text_url"><br>
+	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
+	    </form>
+	<h1>File Sentiment</h1>
+	<p>Upload a file, and the data content will return a sentiment</p>
+	    <form action="upload" method="POST" enctype="multipart/form-data">
+	      Upload Text: <input type="file" name="filename" id="myFile"><br>
+	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
+	    </form>
+	<script type="text/javascript">
+		function submitRequest(request_type)
+		{
+			alert("Clicked " + request_type );
+			return false;
+		}
+	</script>
+  </body>
+</html> 
