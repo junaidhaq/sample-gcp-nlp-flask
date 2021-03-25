@@ -7,6 +7,15 @@ from flask import Flask, redirect, render_template, request
 from google.cloud import datastore
 from google.cloud import language_v1 as language
 
+import sentiment_analysis as sa
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set display row/column to show all data
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 
 
@@ -43,6 +52,40 @@ def upload_text():
         overall_sentiment = 'negative'
     if sentiment == 0:
         overall_sentiment = 'neutral'
+
+    # Create a Cloud Datastore client.
+    datastore_client = datastore.Client()
+
+    # Fetch the current date / time.
+    current_datetime = datetime.now()
+
+    # The kind for the new entity. This is so all 'Sentences' can be queried.
+    kind = "Sentences"
+
+    # Create the Cloud Datastore key for the new entity.
+    key = datastore_client.key(kind, 'sample_task')
+
+    # Alternative to above, the following would store a history of all previous requests as no key
+    # identifier is specified, only a 'kind'. Datastore automatically provisions numeric ids.
+    # key = datastore_client.key(kind)
+
+    # Construct the new entity using the key. Set dictionary values for entity
+    entity = datastore.Entity(key)
+    entity["text"] = text
+    entity["timestamp"] = current_datetime
+    entity["sentiment"] = overall_sentiment
+
+    # Save the new entity to Datastore.
+    datastore_client.put(entity)
+
+    # Redirect to the home page.
+    return redirect("/")
+
+@app.route("/analyze-file", methods=["GET", "POST"])
+def analyze_file():
+    text = request.form["text"]
+
+    sa.analyze(sa)
 
     # Create a Cloud Datastore client.
     datastore_client = datastore.Client()

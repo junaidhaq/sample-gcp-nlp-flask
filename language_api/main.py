@@ -87,8 +87,6 @@ def analyze_file():
 
     sa.analyze(sa)
 
-
-
     # Create a Cloud Datastore client.
     datastore_client = datastore.Client()
 
