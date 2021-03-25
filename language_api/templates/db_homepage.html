@@ -6,6 +6,8 @@
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body>
+	  <div class="w3-container w3-margin-top">
+	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
 	<h1>Sentence Sentiment</h1>
 	<p>Input some text inside the box below, and the sentiment will be returned</p>
 	    <form action="upload" method="POST" enctype="multipart/form-data">
@@ -19,19 +21,24 @@
       <p>Overall Sentiment: {{text_entity['sentiment']}}</p>
     {% endfor %}
 	    -->
-    <hr/>
+	</div>
+	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
 	<h1>URL Sentiment</h1>
 	<p>Enter a URL that will have its text scraped, and the sentiment returned</p>
 	    <form action="upload" method="POST" enctype="multipart/form-data">
 	      Upload Text: <input type="text_url" name="text_url" id="text_url"><br>
 	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
 	    </form>
+	</div>
+	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
 	<h1>File Sentiment</h1>
 	<p>Upload a file, and the data content will return a sentiment</p>
 	    <form action="upload" method="POST" enctype="multipart/form-data">
 	      Upload Text: <input type="file" name="filename" id="myFile"><br>
 	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
 	    </form>
+	</div>
+	  </div>
 	<script type="text/javascript">
 		function submitRequest(request_type)
 		{
