@@ -7,4 +7,4 @@ echo PROJECT_ID = $PROJECT_ID
 # gcloud iam service-accounts keys create ~/key.json --iam-account example@${PROJECT_ID}.iam.gserviceaccount.com
 
 export GOOGLE_APPLICATION_CREDENTIALS="/home/${USER}/key.json"
-echo GOOGLE_APPLICATION_CREDENTIALS = GOOGLE_APPLICATION_CREDENTIALS
+echo GOOGLE_APPLICATION_CREDENTIALS = $GOOGLE_APPLICATION_CREDENTIALS
