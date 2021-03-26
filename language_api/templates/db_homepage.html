@@ -1,78 +1,305 @@
 <html>
-  <head>
-	  <title>GEE Module - NLP Learning</title>
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  </head>
-  <body>
-	  <div class="w3-container w3-margin-top">
-	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
-	<h1>Sentence Sentiment</h1>
-	<p>Input some text inside the box below, and the sentiment will be returned</p>
-	    <form action="upload" method="POST" enctype="multipart/form-data">
-		    <label for="text">Insert Text:</label> <input type="text" name="text" id="text_sentence"><br>
-	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Sentence')">
-	    </form>
-	</div>
-	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
-	<h1>Stored So Far</h1>
-    {% for text_entity in text_entities|sort(attribute='timestamp') %}
-      <hr/>
-      <p>Text: {{text_entity['text']}}</p>
-      <p>Uploaded: {{text_entity['timestamp']}}</p>
-      <p>Overall Sentiment: {{text_entity['sentiment']}}</p>
-    {% endfor %}
-	</div>
-	<!--
-	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
-	<h1>Article Sentiment</h1>
-	<p>Insert an Article, and the data content will return a sentiment</p>
-	    <form action="upload" method="POST" enctype="multipart/form-data">
-		    <label for="text">Upload Article:</label>
-		    <textarea id="text_article" name="text" rows="4" cols="50"></textarea>
-	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Article')">
-	    </form>
-	</div>
-	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
-	<h1>URL Sentiment</h1>
-	<p>Enter a URL that will have its text scraped, and the sentiment returned</p>
-	    <form action="analyze-url" method="POST" enctype="multipart/form-data">
-		    <label for="text">Insert URL:</label> <input type="text" name="text" id="text_url"><br>
-	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
-	    </form>
-	</div>
-	<div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16">
-	<h1>File Sentiment</h1>
-	<p>Upload a file, and the data content will return a sentiment</p>
-	    <form action="analyze-file" method="POST" enctype="multipart/form-data">
-		    <label for="text_file">Upload File:</label><input type="file" name="text" id="text_file"><br>
-	      <input type="submit" name="submit" value="Submit" onClick="return submitRequest('File')">
-	    </form>
-	</div>
-	-->
-	  </div>
-	<script type="text/javascript">
-	function submitRequest(request_type)
-	{
-		var response = true;
-		var text_input = '';
-		if ( request_type == 'Sentence')
-		{
-			text_input = $('#text_sentence').val().trim();
-		}
-		// Check whether a value has been provided
-		if ( ! text_input || text_input == '' )
-		{
-			alert("No text");
-			response = false;
-		}
-		return response;
-	}
-	// When the document is ready
-	$( document ).ready(function() {
-		// Placholder
-	});
-	</script>
-  </body>
-</html> 
+    <head>
+        <title>GEE Module - NLP Learning</title>
+        <!-- Data Tables -->
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.jqueryui.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.jqueryui.min.css"/>
+        <!-- JavaScript -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.jqueryui.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.jqueryui.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+        <!-- Charts.js -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+        <!-- W3CSS -->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3-theme-indigo.css">
+    </head>
+    <body>
+        <script type="text/javascript">
+            function rainbow(numOfSteps, step) {
+                // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+                var r, g, b;
+                var h = step / numOfSteps;
+                var i = ~~(h * 6);
+                var f = h * 6 - i;
+                var q = 1 - f;
+                switch (i % 6) {
+                    case 0:
+                        r = 1;
+                        g = f;
+                        b = 0;
+                        break;
+                    case 1:
+                        r = q;
+                        g = 1;
+                        b = 0;
+                        break;
+                    case 2:
+                        r = 0;
+                        g = 1;
+                        b = f;
+                        break;
+                    case 3:
+                        r = 0;
+                        g = q;
+                        b = 1;
+                        break;
+                    case 4:
+                        r = f;
+                        g = 0;
+                        b = 1;
+                        break;
+                    case 5:
+                        r = 1;
+                        g = 0;
+                        b = q;
+                        break;
+                }
+                var c = "#" + ("00" + (~~(r * 255)).toString(16)).slice(-2) + ("00" + (~~(g * 255)).toString(16)).slice(-2) + ("00" + (~~(b * 255)).toString(16)).slice(-2);
+                return (c);
+            }
+        </script>
+        <div class="w3-container w3-margin-top" id="div_title">
+            <h1>DB News Desk Sentiment Tracker</h1>
+            <p>Select the action that you want to see</p>
+        </div>
+        <div class="w3-container w3-margin-top" id="div_selector">
+            <fieldset>
+                <legend>Choose Action:</legend>
+                <span class="w3-padding-small w3-border-left w3-margin-left">
+                    <label for="select_div">Action Choices:</label>
+                    <select id="select_div" name ="select_div">
+                        <option value="sentence">Process Sentence</option>
+                        <option value="article">Process Article</option>
+                        <option value="url" >Process URL</option>
+                        <option value="file">Process File</option>
+                        <option value="result">View Result</option>
+                    </select>
+                </span>
+            </fieldset>
+        </div>
+        <div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16" id="div_sentence">
+            <h1>Sentence Sentiment</h1>
+            <p>Input some text inside the box below, and the sentiment will be returned</p>
+            <form action="upload" method="POST" enctype="multipart/form-data">
+                <label for="text">Insert Text:</label> <input type="text" name="text" id="text_sentence"><br>
+                <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Sentence')">
+            </form>
+            <p><a href="#div_title">Back to the top</a></p>
+        </div>
+        <div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16 w3-hide" id="div_article">
+            <h1>Article Sentiment</h1>
+            <p>Insert an Article, and the data content will return a sentiment</p>
+            <form action="upload" method="POST" enctype="multipart/form-data">
+                <label for="text">Upload Article:</label>
+                <textarea id="text_article" name="text" rows="4" cols="50"></textarea>
+                <input type="submit" name="submit" value="Submit" onClick="return submitRequest('Article')">
+            </form>
+            <p><a href="#div_title">Back to the top</a></p>
+        </div>
+        <div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16 w3-hide" id="div_url">
+            <h1>URL Sentiment</h1>
+            <p>Enter a URL that will have its text scraped, and the sentiment returned</p>
+            <form action="analyze-url" method="POST" enctype="multipart/form-data">
+                <label for="text">Insert URL:</label> <input type="text" name="text" id="text_url"><br>
+                <input type="submit" name="submit" value="Submit" onClick="return submitRequest('URL')">
+            </form>
+            <p><a href="#div_title">Back to the top</a></p>
+        </div>
+        <div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16 w3-hide" id="div_file">
+            <h1>File Sentiment</h1>
+            <p>Upload a file, and the data content will return a sentiment</p>
+            <form action="analyze-file" method="POST" enctype="multipart/form-data">
+                <label for="text_file">Upload File:</label><input type="file" name="text" id="text_file"><br>
+                <input type="submit" name="submit" value="Submit" onClick="return submitRequest('File')">
+            </form>
+            <p><a href="#div_title">Back to the top</a></p>
+        </div>
+        <div class="w3-container w3-card-4 w3-margin-lef w3-margin-top w3-padding-16 w3-hide" id="div_result">
+            <h2>Record of Articles</h2>
+            <table id="data-listing" class="w3-table stripe cell-border hover compact" width="100%">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Article</th>
+                        <th>Sentiment</th>
+                        <th> Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for text_entity in text_entities|sort(attribute='timestamp') %}
+		    {% set sentiment_value = 0 %}
+		    {% if text_entity['sentiment'] == 'positive' %}
+			    {% set sentiment_value = 1 %}
+		    {% elif text_entity['sentiment'] == 'negative' %}
+			    {% set sentiment_value = -1 %}
+		    {% endif %}
+            <tr>
+            <td>{{text_entity['timestamp']}}</td>
+            <td>{{text_entity['text']}}</td>
+	    <td>{{text_entity['sentiment']}}</td>
+	    <td>{{sentiment_value}}</td>
+	    </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+            <p><a href="#div_title">Back to the top</a></p>
+            <h2>Chart of Sentiment</h2>
+            <canvas id="sc-redc-standard-chart" height="25%" width="100%"></canvas>
+            <script type="text/javascript">
+                // Sample Line Chart
+                // Get the chart object
+                var ctx_l = $('#sc-redc-standard-chart');
+                // And for a doughnut chart
+                var cht_l = new Chart(ctx_l, {
+                    type: 'line',
+                    data: {
+                        labels: [
+            {% for text_entity in text_entities|sort(attribute='timestamp') %}
+		{% if loop.index != 1 %}
+			,
+		{% endif %}
+		{{ loop.index }}
+            {% endfor %}
+                        ],
+                        datasets: [
+                            {
+                                label: "Article",
+                                backgroundColor: "blue",
+                                borderColor: "blue",
+                                fill: false,
+                                data: [
+	    {% set sentiment_total = namespace(value=0) %}
+            {% for text_entity in text_entities|sort(attribute='timestamp') %}
+		{% if loop.index != 1 %}
+			,
+		{% endif %}
+	    	{% set sentiment_value = 0 %}
+	    	{% if text_entity['sentiment'] == 'positive' %}
+		    {% set sentiment_value = 1 %}
+	    	{% elif text_entity['sentiment'] == 'negative' %}
+		    {% set sentiment_value = -1 %}
+	    	{% endif %}
+		{% set sentiment_total.value = sentiment_total.value + sentiment_value %}
+		{{ sentiment_total.value }}
+            {% endfor %}
+				]}]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Sentiment Over Time'
+                        },
+                        legend: {
+                            display: true
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Date'
+                                    }
+                                }],
+                            yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Hour'
+                                    }
+                                }]
+                        }
+                    }
+                });
+            </script>
+	    <!--
+            <h1>Stored So Far</h1>
+            {% for text_entity in text_entities|sort(attribute='timestamp') %}
+            <hr/>
+            <p>Text: {{text_entity['text']}}</p>
+            <p>Uploaded: {{text_entity['timestamp']}}</p>
+            <p>Overall Sentiment: {{text_entity['sentiment']}}</p>
+            {% endfor %}
+	    -->
+            <p><a href="#div_title">Back to the top</a></p>
+        </div>
+        <script type="text/javascript">
+            // Array of Divs
+            var div_list = ["sentence", "article", "url", "file", "result"];
+            var report_table;
+            // Check request before sending it
+            function submitRequest(request_type)
+            {
+                var response = true;
+                var text_input = '';
+                if (request_type == 'Sentence')
+                {
+                    text_input = $('#text_sentence').val().trim();
+                } else if (request_type == 'Article')
+                {
+                    alert('Not Implemented')
+                    return false;
+                } else if (request_type == 'URL')
+                {
+                    alert('Not Implemented')
+                    return false;
+                } else if (request_type == 'File')
+                {
+                    alert('Not Implemented')
+                    return false;
+                }
+                // Check whether a value has been provided
+                if (!text_input || text_input == '')
+                {
+                    alert("No text provided");
+                    response = false;
+                }
+                return response;
+            }
+            // Change div to show
+            function change_div(chosen_div) {
+                // Hide all Divs
+                for (i = 0; i < div_list.length; i++) {
+                    $('#div_' + div_list[i]).removeClass('w3-show').addClass('w3-hide');
+                }
+                // Now show the chosen div
+                $('#div_' + chosen_div).removeClass('w3-hide').addClass('w3-show');
+            }
+            // When the document is ready(
+            $(document).ready(function () {
+                // Create the table
+                report_table = $('#data-listing').DataTable({
+                    dom: 'B<"clear">lfrtip',
+                    "order": [0,'desc'],
+                    lengthMenu: [
+                        [5, 25, 50, 100],
+                        ['5 rows', '25 rows', '50 rows', '100 rows']
+                    ]
+                });
+                // Assign a control
+                $("#select_div").change(function () {
+                    change_div(this.value);
+                });
+            });
+        </script>
+    </body>
+</html>

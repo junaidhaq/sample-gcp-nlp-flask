@@ -65,6 +65,7 @@ def upload_text():
     entity["text"] = text
     entity["timestamp"] = current_datetime
     entity["sentiment"] = overall_sentiment
+    entity["sentiment_score"] = sentiment
 
     # Save the new entity to Datastore.
     datastore_client.put(entity)
@@ -95,7 +96,9 @@ def analyze_text_sentiment(text):
     results = dict(
         text=text,
         score=f"{sentiment.score:.1%}",
-        magnitude=f"{sentiment.magnitude:.1%}",
+        # score="{}".format(sentiment.score),
+        magnitude=f"{sentiment.magnitude:.1%}"
+        # magnitude="{}".format(sentiment.magnitude)
     )
     for k, v in results.items():
         print(f"{k:10}: {v}")
